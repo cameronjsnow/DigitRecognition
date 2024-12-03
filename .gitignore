@@ -1,0 +1,16 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+
+# Model files
+*.pth
+
+# Dataset
+data/
+
+# OS files
+.DS_Store

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digit Recognizer</title>
+    <!-- Include Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom styles (if any) -->
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container mx-auto flex flex-col md:flex-row">
+        <!-- Drawing Canvas -->
+        <div class="w-full md:w-1/2 p-4 flex flex-col items-center">
+            <canvas id="canvas" class="border border-gray-400 bg-white" width="280" height="280" style="background-color: black;"></canvas>
+            <div class="mt-4">
+                <button id="clear-btn" class="bg-red-500 text-white px-4 py-2 rounded">Clear</button>
+            </div>
+        </div>
+        <!-- Prediction Display -->
+        <div class="w-full md:w-1/2 p-4 flex items-center justify-center">
+            <div>
+                <h1 class="text-4xl text-gray-700 text-center">Predicted Number:</h1>
+                <p id="prediction" class="text-6xl font-bold text-blue-600 mt-4 text-center"></p>
+            </div>
+        </div>
+    </div>
+    <!-- Include the JavaScript file -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
