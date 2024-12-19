@@ -7,8 +7,9 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image, ImageOps, ImageFilter
-import os
 import datetime
+import os
+
 from sqlalchemy import create_engine, Column, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -83,8 +84,7 @@ def stats():
 
 @app.route('/api/docs')
 def api_docs():
-    # Serve OpenAPI spec (YAML or JSON)
-    # For simplicity, we'll just return a basic JSON spec inline
+    # Simple OpenAPI spec for demonstration
     spec = {
         "openapi": "3.0.0",
         "info": {
@@ -116,7 +116,17 @@ def api_docs():
                                     "schema": {
                                         "type": "object",
                                         "properties": {
-                                            "prediction": {"type": "string"}
+                                            "top_prediction": {"type": "string"},
+                                            "predictions": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "digit": {"type": "string"},
+                                                        "probability": {"type": "number"}
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -149,23 +159,26 @@ def predict():
     img_tensor = transform(img)
     img_tensor = img_tensor.unsqueeze(0)
 
-    # Save preprocessed image for debugging
-    img.save('static/preprocessed_image.png')
-
     with torch.no_grad():
         output = model(img_tensor)
-        pred = output.argmax(dim=1, keepdim=True)
-        digit = pred.item()
+        probabilities = F.softmax(output, dim=1).squeeze().tolist()
+        digit_probs = list(enumerate(probabilities))
+        digit_probs.sort(key=lambda x: x[1], reverse=True)
+        top_3 = digit_probs[:3]
 
-    # Log prediction to DB
+    # Log the top prediction to DB
     session = SessionLocal()
-    log_entry = PredictionLog(predicted_digit=digit, timestamp=datetime.datetime.utcnow())
+    log_entry = PredictionLog(predicted_digit=top_3[0][0], timestamp=datetime.datetime.utcnow())
     session.add(log_entry)
     session.commit()
     session.close()
 
-    return jsonify({'prediction': str(digit)})
+    return jsonify({
+        'top_prediction': str(top_3[0][0]),
+        'predictions': [
+            {'digit': str(d), 'probability': round(p, 3)} for d, p in top_3
+        ]
+    })
 
-# Production-ready server entrypoint
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

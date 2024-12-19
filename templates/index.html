@@ -7,29 +7,43 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex flex-col items-center min-h-screen py-10">
+<body class="bg-gray-100 flex flex-col items-center min-h-screen py-10 relative">
     <h1 class="text-4xl font-semibold text-gray-700 mb-8">Handwritten Digit Recognition</h1>
     <div class="flex flex-col md:flex-row items-start justify-center space-y-8 md:space-x-8 md:space-y-0">
         <div class="flex flex-col items-center">
             <div class="rounded-lg border-4 border-gray-300 shadow-lg bg-white p-4">
                 <canvas id="canvas" class="border-none" width="280" height="280" style="background-color: black;"></canvas>
             </div>
-            <div class="mt-4">
-                <button id="clear-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-200">
-                    Clear
-                </button>
+            <div class="mt-4 space-x-4">
+                <button id="clear-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-200">Clear</button>
+                <button id="help-btn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition duration-200">Help</button>
             </div>
         </div>
         <div class="flex flex-col items-center">
             <h2 class="text-2xl text-gray-700 text-center font-semibold">Predicted Number:</h2>
             <p id="prediction" class="text-6xl font-bold text-blue-600 mt-4 text-center"></p>
+            <div id="top-predictions" class="mt-4 text-gray-700"></div>
         </div>
     </div>
 
     <div class="mt-8">
-        <a href="/stats" class="text-blue-600 hover:underline">View Stats</a> | 
+        <a href="/stats" class="text-blue-600 hover:underline">View Stats</a> |
         <a href="/api/docs" class="text-blue-600 hover:underline">API Docs</a>
     </div>
+
+    <!-- Help Overlay -->
+    <div id="help-overlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center">
+        <div class="bg-white p-8 rounded shadow-lg max-w-sm">
+            <h3 class="text-xl font-semibold mb-4">How to Use</h3>
+            <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Draw a single digit inside the black square.</li>
+                <li>Release the mouse or lift your finger to see the prediction.</li>
+                <li>Click "Clear" to reset and try again.</li>
+            </ul>
+            <button id="close-help" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Got it!</button>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>

@@ -65,6 +65,7 @@ function drawTouch(e) {
 document.getElementById('clear-btn').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById('prediction').innerText = '';
+    document.getElementById('top-predictions').innerHTML = '';
 });
 
 function sendImage() {
@@ -78,7 +79,28 @@ function sendImage() {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById('prediction').innerText = data.prediction;
+        document.getElementById('prediction').innerText = data.top_prediction || data.prediction;
+        if (data.predictions) {
+            let html = '<h3 class="text-lg font-semibold mb-2">Top Predictions:</h3><ul class="list-disc list-inside">';
+            data.predictions.forEach(pred => {
+                html += `<li>Digit: ${pred.digit}, Prob: ${pred.probability}</li>`;
+            });
+            html += '</ul>';
+            document.getElementById('top-predictions').innerHTML = html;
+        }
     })
     .catch(error => console.error('Error:', error));
 }
+
+// Help Overlay Logic
+const helpBtn = document.getElementById('help-btn');
+const helpOverlay = document.getElementById('help-overlay');
+const closeHelp = document.getElementById('close-help');
+
+helpBtn.addEventListener('click', () => {
+    helpOverlay.classList.remove('hidden');
+});
+
+closeHelp.addEventListener('click', () => {
+    helpOverlay.classList.add('hidden');
+});
