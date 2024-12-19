@@ -2,25 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Digit Recognizer</title>
+    <title>Handwritten Digit Recognition</title>
     <!-- Include Tailwind CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Custom styles (if any) -->
+    <!-- Custom styles -->
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="container mx-auto flex flex-col md:flex-row">
-        <!-- Drawing Canvas -->
-        <div class="w-full md:w-1/2 p-4 flex flex-col items-center">
-            <canvas id="canvas" class="border border-gray-400 bg-white" width="280" height="280" style="background-color: black;"></canvas>
-            <div class="mt-4">
-                <button id="clear-btn" class="bg-red-500 text-white px-4 py-2 rounded">Clear</button>
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-8 md:space-y-0">
+            <!-- Drawing Canvas Area -->
+            <div class="flex flex-col items-center">
+                <div class="rounded-lg border-4 border-gray-300 shadow-lg bg-white p-4">
+                    <canvas id="canvas" class="border-none" width="280" height="280" style="background-color: black;"></canvas>
+                </div>
+                <div class="mt-4">
+                    <button id="clear-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-200">
+                        Clear
+                    </button>
+                </div>
             </div>
-        </div>
-        <!-- Prediction Display -->
-        <div class="w-full md:w-1/2 p-4 flex items-center justify-center">
-            <div>
-                <h1 class="text-4xl text-gray-700 text-center">Predicted Number:</h1>
+            <!-- Prediction Display -->
+            <div class="flex flex-col items-center">
+                <h1 class="text-4xl text-gray-700 text-center font-semibold">Predicted Number:</h1>
                 <p id="prediction" class="text-6xl font-bold text-blue-600 mt-4 text-center"></p>
             </div>
         </div>
