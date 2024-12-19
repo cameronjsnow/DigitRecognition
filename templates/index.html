@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Handwritten Digit Recognition</title>
-    <!-- Include Tailwind CSS via CDN -->
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Custom styles -->
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="container mx-auto px-4">
-        <div class="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-8 md:space-y-0">
-            <!-- Drawing Canvas Area -->
-            <div class="flex flex-col items-center">
-                <div class="rounded-lg border-4 border-gray-300 shadow-lg bg-white p-4">
-                    <canvas id="canvas" class="border-none" width="280" height="280" style="background-color: black;"></canvas>
-                </div>
-                <div class="mt-4">
-                    <button id="clear-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-200">
-                        Clear
-                    </button>
-                </div>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen py-10">
+    <h1 class="text-4xl font-semibold text-gray-700 mb-8">Handwritten Digit Recognition</h1>
+    <div class="flex flex-col md:flex-row items-start justify-center space-y-8 md:space-x-8 md:space-y-0">
+        <div class="flex flex-col items-center">
+            <div class="rounded-lg border-4 border-gray-300 shadow-lg bg-white p-4">
+                <canvas id="canvas" class="border-none" width="280" height="280" style="background-color: black;"></canvas>
             </div>
-            <!-- Prediction Display -->
-            <div class="flex flex-col items-center">
-                <h1 class="text-4xl text-gray-700 text-center font-semibold">Predicted Number:</h1>
-                <p id="prediction" class="text-6xl font-bold text-blue-600 mt-4 text-center"></p>
+            <div class="mt-4">
+                <button id="clear-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-200">
+                    Clear
+                </button>
             </div>
         </div>
+        <div class="flex flex-col items-center">
+            <h2 class="text-2xl text-gray-700 text-center font-semibold">Predicted Number:</h2>
+            <p id="prediction" class="text-6xl font-bold text-blue-600 mt-4 text-center"></p>
+        </div>
     </div>
-    <!-- Include the JavaScript file -->
+
+    <div class="mt-8">
+        <a href="/stats" class="text-blue-600 hover:underline">View Stats</a> | 
+        <a href="/api/docs" class="text-blue-600 hover:underline">API Docs</a>
+    </div>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
